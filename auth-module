@@ -1,0 +1,41 @@
+
+      const AUTH_KEY = 'userAuth';
+
+      const Auth = {
+        signUp(email, password) {
+          const existingUser = JSON.parse(localStorage.getItem(AUTH_KEY));
+          if (existingUser) {
+            return { error: 'User already exists.' };
+          }
+          const user = { email, password };
+          localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+          return { success: true };
+        },
+
+        login(email, password) {
+          const user = JSON.parse(localStorage.getItem(AUTH_KEY));
+          if (!user) {
+            return { error: 'No user found. Please sign up.' };
+          }
+          if (user.email === email && user.password === password) {
+            return { success: true };
+          }
+          return { error: 'Invalid email or password.' };
+        },
+
+        logout() {
+          localStorage.removeItem(AUTH_KEY);
+          return { success: true };
+        },
+
+        isAuthenticated() {
+          return !!localStorage.getItem(AUTH_KEY);
+        },
+
+        getUser() {
+          return JSON.parse(localStorage.getItem(AUTH_KEY));
+        }
+      };
+
+      export default Auth;
+    
